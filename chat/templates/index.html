@@ -33,20 +33,26 @@
             
           <div class="msg-text">
             {% for row in init_ans%}
-            {{ row.ans_desc }}
-            
-            <script>
-              var id = '{{row.id}}'
-            </script>
-            {% endfor %}
               
             <br>
             <div>
-              <ol style="padding-left:17px ;">
-              {% for row in sub %}
-              <b><li>{{ row.sub_ques_desc }} </li></b>
+              {% if sub %}
+                {{ row.ans_desc }}
+                <ol style="padding-left:17px ;">
+                {% for row in sub %}
+                <b><li>{{ row.sub_ques_desc }} </li></b>
+                {% endfor %}
+                </ol>
+              
+              {% else %}
+                <b>Your Query has been registered.</b>
+                <br> Our sales team will reach you out with solution regarding your query, as soon as possible.
+                <br>Thank You for you patience
+                <br> If you want to explore Gateway Group of companies you can use our chat bot by clicking on the button below<br>
+                <a href="/" class = "w3-button w3-black">Click Here </a>
+           
+              {% endif %}
               {% endfor %}
-              </ol>
             </div>
           </div>
         </div>

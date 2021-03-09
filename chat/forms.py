@@ -20,3 +20,10 @@ class AdminLogin(FlaskForm):
                         validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
+
+class RegisterQuery(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    phone = StringField('Phone Number', validators=[DataRequired()])
+    query = TextAreaField('Register Query',validators=[DataRequired()])
+    submit = SubmitField('Submit')

@@ -31,6 +31,23 @@ class Sub_ques(db.Model):
     def __ref__(self):
         return f"chatbot_sub_ques('{self.sub_ques_id}' , '{self.perv_ans_id}' , '{self.next_ans_id}' , '{self.sub_ques_desc}')"
 
+
+class UserQueries(db.Model, UserMixin):
+    __tablename__ = 'userqueries'
+    id = db.Column(db.Integer , primary_key = True, autoincrement=True)
+    name = db.Column(db.String(100), nullable = False)
+    email = db.Column(db.String(100), nullable = False)
+    phone =  db.Column(db.String(10), nullable = False)
+    query = db.Column(db.String(10000), nullable = False)
+    status = db.Column(db.String(8)) 
+
+    def __init__(self,name,email,phone,query,status = "Unsolved"):
+        self.name = name
+        self.email = email
+        self.phone = phone
+        self.query = query 
+        self.status = status
+
 @login_manager.user_loader
 def load_user(id):
     return Admin.query.get(id)
@@ -44,4 +61,7 @@ class Admin(db.Model, UserMixin):
     def __init__(self,email,password):
         self.email = email
         self.password = password
+
+
+
 

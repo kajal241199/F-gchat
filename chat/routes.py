@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
-from chat import app
+from chat import app,mail
 from chat.models import *
 from chat.models import *
 from chat.forms import *
 from sqlalchemy import and_
 from flask_login import login_user, current_user,logout_user, login_required
 from datetime import datetime
+from flask_mail import Message
+
 
 now = datetime.now()
 
@@ -13,16 +15,24 @@ current_time = now.strftime("%H:%M")
 
 class ans_id:
     id = 0
+    ref_no = 12345
 
 a_id = ans_id()
 
 
 @app.route("/")
-def home(id = 1):
-    a_id.id = 1
-    ans = db.session.query(Ans).filter(Ans.id == "1")
-    sub = db.session.query(Sub_ques).filter(Sub_ques.perv_ans_id == 1)
-    return render_template("index.html" , init_ans = ans , sub = sub , time = current_time)
+def home():
+    db.create_all()
+    if (a_id.id == 88):
+        ans = db.session.query(Ans).filter(Ans.id == "88")
+        a_id.id = 0
+        return render_template("index.html" , init_ans = ans , sub = None,time = current_time)
+    else:     
+        a_id.id = 1
+        ans = db.session.query(Ans).filter(Ans.id == "1")
+        sub = db.session.query(Sub_ques).filter(Sub_ques.perv_ans_id == 1)
+
+        return render_template("index.html" , init_ans = ans , sub = sub , time = current_time)
 
 @app.route("/get")
 def get_bot_response():
@@ -131,7 +141,7 @@ def showallquery():
         ls.append(sub.perv_ans_id)
         ans_list.append(ls)
     
-    return render_template("showallquery.html" , ls = ans_list, dec_list = dec_list)
+    return render_template("showallchatbotquery.html" , ls = ans_list, dec_list = dec_list)
 
 @app.route("/updateans/<int:id>" ,methods=['POST' , 'GET'])
 @login_required
@@ -170,6 +180,33 @@ def updateques(id):
     
     return render_template("updateques.html" , form = form)
 
+@app.route("/userquery" ,  methods=['POST' , 'GET'])
+@login_required
+def userquery():
+    query = db.session.query(UserQueries).all()
+    return render_template("userquery.html" , query = query)
+
 @app.route("/registerquery" ,methods=['POST' , 'GET'])
 def registerquery():
-    return render_template("registerquery.html")
+    form = RegisterQuery()
+    if form.validate_on_submit():
+        query = UserQueries(name = form.name.data , email = form.email.data ,phone = form.phone.data,query = form.query.data, status = 'Unsolved')
+        a_id.id = 88
+        db.session.add(query)
+        db.session.commit()
+        msg = Message('User Query',
+                  sender='hslovely1999@gmail.com',
+                  recipients=[form.email.data])
+        msg.body = "Your Query Has Been registered\n User Name :- {} \nUser Email :-{} \nUser Phone Number :-{} \nUser Query Description:-{}".format(form.name.data,form.email.data,form.phone.data,form.query.data)
+        mail.send(msg)
+        return redirect(url_for('home'))
+    return render_template("registerquery.html", form = form)
+
+
+@app.route("/updatestatus/<int:id>" ,  methods=['POST' , 'GET'])
+@login_required
+def updatestatus(id):
+    query = db.session.query(UserQueries).filter_by(id = id).first()
+    query.status = "Solved"
+    db.session.commit()
+    return redirect(url_for('userquery'))

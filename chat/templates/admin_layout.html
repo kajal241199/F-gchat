@@ -54,15 +54,20 @@
         <title>Admin Login</title>
     </head>
     <body style="background-color:   #f3c36b">
-      {% if current_user.is_authenticated%}
         <ul>
+      {% if current_user.is_authenticated%}
+        
             <li style="float:left"><a href=" {{ url_for('adminrights') }} ">Admin Home</a></li>
             <li style="float:left"><a href=" {{ url_for('addques') }} ">Create Questions</a></li>
             <li style="float: left;"><a href=" {{ url_for('addans') }} ">Create Answer</a></li>
-            <li style="float:left"><a href=" {{ url_for('showallquery') }} ">Queries</a></li>
+            <li style="float:left"><a href=" {{ url_for('showallquery') }} ">ChatBot Queries</a></li>
+            <li style="float:left"><a href=" {{ url_for('userquery') }} ">User Queries</a></li>
             <li style="float:right"><a href="{{ url_for('admin_logout') }}">LogOut</a></li>
-          </ul>
+          
+      {% else %}
+          <li></li>
       {% endif %}
+    </ul>
           <div class="container">
             {% block content %}{% endblock %}
           </div>
