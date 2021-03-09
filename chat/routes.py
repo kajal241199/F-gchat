@@ -197,6 +197,7 @@ def registerquery():
         msg = Message('User Query',
                   sender='hslovely1999@gmail.com',
                   recipients=[form.email.data])
+        query = db.session.query(UserQueries).filter_by(id = id).first()
         msg.body = "Your Query Has Been registered\n User Name :- {} \nUser Email :-{} \nUser Phone Number :-{} \nUser Query Description:-{}".format(form.name.data,form.email.data,form.phone.data,form.query.data)
         mail.send(msg)
         return redirect(url_for('home'))
