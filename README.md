@@ -56,6 +56,6 @@ deactivate
 ## Run the code at your local envn
 **Run it as**
 ```bash
- python run.py
+ python app.py
  ```
 >Open your browser and the site can be found running at http://127.0.0.1:5000/ 
