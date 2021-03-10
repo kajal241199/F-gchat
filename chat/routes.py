@@ -13,13 +13,14 @@ now = datetime.now()
 
 current_time = now.strftime("%H:%M")
 
+#class to hold data of last ans_id
 class ans_id:
     id = 0
     ref_no = 12345
 
 a_id = ans_id()
 
-
+#route for home page of chatbot
 @app.route("/")
 def home():
     db.create_all()
@@ -34,6 +35,7 @@ def home():
 
         return render_template("index.html" , init_ans = ans , sub = sub , time = current_time)
 
+# to respond the user's question
 @app.route("/get")
 def get_bot_response():
     response = ""
@@ -64,7 +66,7 @@ def get_bot_response():
         
     return response
 
-
+#dispaly the admin page after admin successfully log in
 @app.route("/admin" , methods = ["GET" ,"POST"])
 def admin_login():
     if current_user.is_authenticated:
@@ -80,18 +82,19 @@ def admin_login():
    
     return render_template("admin.html" , form = form)
 
+#will route admin to the admin login page after logout
 @app.route("/logout" )
 def admin_logout():
     logout_user() 
     return redirect(url_for("admin_login"))
 
-
+#admin will able to login with username and password
 @app.route("/adminrights")
 @login_required
 def adminrights():
     return render_template("adminright.html")
 
-
+#admin can register questions for chatbot
 @app.route("/registerques" , methods = ["GET" ,"POST"])
 @login_required
 def addques():
@@ -107,6 +110,7 @@ def addques():
         return redirect(url_for('adminrights'))
     return render_template("registerques.html" , form = form)
 
+#admin can register the answer for each subquestion
 @app.route("/registerans" ,methods = ["GET" ,"POST"])
 @login_required
 def addans():
@@ -119,6 +123,7 @@ def addans():
         return redirect(url_for('adminrights'))
     return render_template("registerans.html" , form = form)
 
+#display all the questions and their subquestions with answers
 @app.route("/showallquery")
 @login_required
 def showallquery():
@@ -143,6 +148,7 @@ def showallquery():
     
     return render_template("showallchatbotquery.html" , ls = ans_list, dec_list = dec_list)
 
+#admin can update the registered answers
 @app.route("/updateans/<int:id>" ,methods=['POST' , 'GET'])
 @login_required
 def updateans(id):
@@ -158,6 +164,7 @@ def updateans(id):
 
     return render_template("updateans.html" , form = form)    
 
+#admin can update the registered questions
 @app.route("/updateques/<int:id>" ,  methods=['POST' , 'GET'])
 @login_required
 def updateques(id):
@@ -180,12 +187,14 @@ def updateques(id):
     
     return render_template("updateques.html" , form = form)
 
+#display all the queries registered by the users
 @app.route("/userquery" ,  methods=['POST' , 'GET'])
 @login_required
 def userquery():
     query = db.session.query(UserQueries).all()
     return render_template("userquery.html" , query = query)
 
+#will route users to the register-query page to register their queries 
 @app.route("/registerquery" ,methods=['POST' , 'GET'])
 def registerquery():
     form = RegisterQuery()
@@ -197,13 +206,12 @@ def registerquery():
         msg = Message('User Query',
                   sender='hslovely1999@gmail.com',
                   recipients=[form.email.data])
-        query = db.session.query(UserQueries).filter_by(id = id).first()
         msg.body = "Your Query Has Been registered\n User Name :- {} \nUser Email :-{} \nUser Phone Number :-{} \nUser Query Description:-{}".format(form.name.data,form.email.data,form.phone.data,form.query.data)
         mail.send(msg)
         return redirect(url_for('home'))
     return render_template("registerquery.html", form = form)
 
-
+#update the status from unsolved to solved if the query has been solved by the admin
 @app.route("/updatestatus/<int:id>" ,  methods=['POST' , 'GET'])
 @login_required
 def updatestatus(id):

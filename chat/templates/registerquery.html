@@ -32,11 +32,13 @@
     <div class = "header"></div> 
     
     <b><div class="content-section"  style=" border: 0px solid black; padding :50px;font-variant: small-caps;">
+            <!-- Form to Register query-->
             <form method="POST" action="">
                 {{ form.hidden_tag() }}
                 <fieldset class="form-group" style="border: 0px;">
                     <legend class="border-bottom mb-4">Create Question</legend>
                     <div class="form-group">
+                            <!-- Name Field -->
                             {{ form.name.label(class="form-control-label") }}
                             {% if form.name.errors %}
                                 {{ form.name(class="form-control form-control-lg is-invalid") }}
@@ -50,6 +52,7 @@
                             {% endif %}
                         </div>
                     <div class="form-group">
+                        <!-- Email Field -->
                         {{ form.email.label(class="form-control-label") }}
                         {% if form.email.errors %}
                             {{ form.email(class="form-control form-control-lg is-invalid") }}
@@ -63,6 +66,7 @@
                         {% endif %}
                     </div>
                     <div class="form-group">
+                            <!-- Phone number Field -->   
                             {{ form.phone.label(class="form-control-label") }}
                             {% if form.phone.errors %}
                                 {{ form.phone(class="form-control form-control-lg is-invalid") }}
@@ -76,6 +80,7 @@
                             {% endif %}
                     </div>
                     <div class="form-group">
+                            <!-- Query Field to register query -->
                             {{ form.query.label(class="form-control-label") }}
                             {% if form.query.errors %}
                                 {{ form.query(class="form-control form-control-lg is-invalid") }}
@@ -92,6 +97,7 @@
                  </fieldset>
                 </b>
                  <div class="form-group" style="margin-left:10px ;">
+                    <!-- Submit button -->
                     {{ form.submit(class="w3-btn w3-black") }}
                 </div>
             </form>
