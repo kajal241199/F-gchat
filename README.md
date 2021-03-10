@@ -34,7 +34,7 @@ cd ..
 ```
 * **Install the dependencies**
 ```
-pip install -r requirements.txt
+pip install -r requirement.txt
 ```
 * **To list the installed packages**
 ```
