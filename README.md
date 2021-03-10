@@ -34,8 +34,7 @@ cd ..
 ```
 * **Install the dependencies**
 ```
-pip install -r requirements.txt
-=======
+pip install -r requirement.txt
 ```
 * **To list the installed packages**
 ```
@@ -60,6 +59,5 @@ deactivate
  python app.py
  
  >Open your browser and the site can be found running at http://127.0.0.1:5000/ 
-=======
  ```
 
